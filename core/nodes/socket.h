@@ -16,7 +16,7 @@ class EdgesNode;
 
 class SocketNode : public Serializable {
 public:
-    SocketNode(Node* node_, int index = 0, POSITION position = LEFT_TOP, SOCKETTYPES item = COLOR_1);
+    SocketNode(Node* node_, int index = 0, POSITION position = LEFT_TOP, const std::string& label = "Number 1");
     void setConnectedEdge(EdgesNode* edge = nullptr);
     std::pair<int, int> getSocketPos() const;
     bool hasEdge() const;
@@ -30,7 +30,7 @@ public:
     int index;
     Node *node;
     POSITION position;
-    SOCKETTYPES socket_type;
+    std::string label;
 
     EdgesNode* edge;
 

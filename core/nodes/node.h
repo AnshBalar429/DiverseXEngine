@@ -23,8 +23,8 @@ using namespace std;
 
 class Node : public Serializable{
 public:
-    Node(Scene* scene_, const string &title = "Undefine Node", vector<SOCKETTYPES> input_size = {}, vector<SOCKETTYPES> output_size = {});
-    void initNode(string title, vector<SOCKETTYPES> in, vector<SOCKETTYPES> out);
+    Node(Scene* scene_, const string &title = "Undefine Node", vector<std::string> input_size = {}, vector<std::string> output_size = {});
+    void initNode(string title, vector<std::string> in, vector<std::string> out);
     pair<int, int> getSocketPos(int index, POSITION position);
     void setPos(int x, int y);
     QPointF pos() const;
@@ -60,8 +60,8 @@ public:
 private:
     static unordered_map<QString, function<Node*(Scene*)>>& registry();
 
-    vector<SOCKETTYPES> in_socket_type;
-    vector<SOCKETTYPES> out_socket_type;
+    vector<std::string> in_socket_type;
+    vector<std::string> out_socket_type;
     string title;
     int pending_w = -1, pending_h = -1;
     POSITION in_pos = LEFT_BOTTOM, out_pos = RIGHT_TOP;

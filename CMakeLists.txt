@@ -55,6 +55,8 @@ set(PROJECT_SOURCES
         ui/canvas/editorWindow.h
         core/codegeneration/codeTemplateManager.cpp
         core/codegeneration/codeTemplateManager.h
+        ui/canvas/syshighlighter.cpp
+        ui/canvas/syshighlighter.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

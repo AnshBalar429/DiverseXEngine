@@ -17,7 +17,7 @@ class SocketNode;
 
 class SocketGraphics : public QGraphicsItem{
 public:
-    SocketGraphics(SocketNode *socket, NodeGraphics* parent = nullptr, SOCKETTYPES item = COLOR_1);
+    SocketGraphics(SocketNode *socket, const std::string& label, NodeGraphics* parent = nullptr);
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
     QRectF boundingRect() const override;
@@ -31,9 +31,8 @@ public:
     QPen _pen;
     QBrush _brush;
     SocketNode *socket;
-
+    std::string label;
 
 };
 
 #endif //SOCKETGRAPHICS_H
-

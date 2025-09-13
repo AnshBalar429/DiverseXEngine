@@ -38,35 +38,14 @@ inline EDGETYPES getEdgeEnum(int pos) {
     }
 }
 
-enum SOCKETTYPES {
-    COLOR_1 = 1,
-    COLOR_2 = 2,
-    COLOR_3 = 3,
-    COLOR_4 = 4,
-    COLOR_5 = 5,
-    COLOR_6 = 6,
-};
-
-inline SOCKETTYPES getSocketType(int pos) {
-    switch (pos) {
-        case 1: return COLOR_1;
-        case 2: return COLOR_2;
-        case 3: return COLOR_3;
-        case 4: return COLOR_4;
-        case 5: return COLOR_5;
-        case 6: return COLOR_6;
-        default: return COLOR_1;
-    }
-}
-
-inline QColor getSocketColor(SOCKETTYPES type) {
+inline QColor getSocketColor(int type) {
     switch (type) {
-        case COLOR_1: return QColor("#FFFF7700");
-        case COLOR_2: return QColor("#FF52e220");
-        case COLOR_3: return QColor("#FF0056a6");
-        case COLOR_4: return QColor("#FFa86db1");
-        case COLOR_5: return QColor("#FF40E0D0");
-        case COLOR_6: return QColor("#FFdbe220");
+        case 1: return QColor("#FFFF7700");
+        case 2: return QColor("#FF52e220");
+        case 3: return QColor("#FF0056a6");
+        case 4: return QColor("#FFa86db1");
+        case 5: return QColor("#FF40E0D0");
+        case 6: return QColor("#FFdbe220");
         default: return QColor("#FFFF7700");
     }
 }
