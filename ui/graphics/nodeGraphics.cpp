@@ -8,6 +8,8 @@
 #include <QDebug>
 #include <QPainter>
 #include <QVariant>
+#include <QGraphicsDropShadowEffect>
+#include <QGraphicsSceneMouseEvent>
 
 #include "../../core/nodes/node.h"
 #include "../../core/nodes/edge.h"
@@ -21,22 +23,27 @@ inline bool DEBUG = false;
 NodeGraphics::NodeGraphics(Node *node, QGraphicsItem *parent) : QGraphicsItem(parent), node(node) {
 
         _title_color = Qt::white;
-        _title_font = QFont("Ubuntu", 12);
-        _pen_default =  QPen(QColor("#7F000000"));
-        _pen_selected =  QPen(QColor("#FFFFA637"));
+        _title_font = QFont("Ubuntu", 12, QFont::Medium);
+        _pen_default = QPen(QColor("#7F000000"), 1.5);
+        _pen_selected = QPen(QColor("#FFFFA637"), 2.5);
 
-        _title_brush = QBrush(QColor("#FF313131"));
-        _bg_brush = QBrush(QColor("#E3212121"));
+        _title_brush = QBrush(QColor("#FF1B5E20"));
+        _bg_brush = QBrush(QColor("#F5212121"));
 
         initUI();
         initTitle();
         setTitle("Undefine Node");
-
 }
 
 void NodeGraphics::initUI() {
     setFlags(QGraphicsItem::ItemIsSelectable |
         QGraphicsItem::ItemIsMovable);
+
+    auto* effect = new QGraphicsDropShadowEffect();
+    effect->setOffset(3, 3);
+    effect->setBlurRadius(15);
+    effect->setColor(QColor(0, 0, 0, 120));
+    setGraphicsEffect(effect);
 }
 
 void NodeGraphics::initTitle() {
@@ -73,6 +80,8 @@ QRectF NodeGraphics::boundingRect() const {
 }
 
 void NodeGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) {
+    painter->setRenderHint(QPainter::Antialiasing);
+
     //title
     auto path_title = QPainterPath();
     path_title.setFillRule(Qt::WindingFill);
@@ -97,11 +106,11 @@ void NodeGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     // outline
     auto path_outline = QPainterPath();
     path_outline.addRoundedRect(0, 0, hw.second, hw.first, edge_size, edge_size);
-    if (!isSelected())
-        painter->setPen(_pen_default);
-    else
+    if (isSelected()) {
         painter->setPen(_pen_selected);
-
+    } else {
+        painter->setPen(_pen_default);
+    }
     painter->setBrush(Qt::NoBrush);
     painter->drawPath(path_outline.simplified());
 }
@@ -129,4 +138,3 @@ std::pair<int, int> NodeGraphics::getHeightAndWidth() {
 void NodeGraphics::setHeightWidth(int h, int w) {
     height = h; width = w;
 }
-

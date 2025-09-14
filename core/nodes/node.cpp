@@ -16,12 +16,12 @@
 #include "../../ui/canvas/canvasview.h"
 #include "../../ui/graphics/nodeGraphics.h"
 
-Node::Node(Scene *scene_, const  string &title, vector<SOCKETTYPES> input_size, vector<SOCKETTYPES> output_size) : scene(
+Node::Node(Scene *scene_, const  string &title, vector<std::string> input_size, vector<std::string> output_size) : scene(
     scene_), Serializable(), in_socket_type(input_size), out_socket_type(output_size), title(title) {
     grNode = nullptr;
 }
 
-void Node::initNode(string title, vector<SOCKETTYPES> in, vector<SOCKETTYPES> out) {
+void Node::initNode(string title, vector<std::string> in, vector<std::string> out) {
     grNode = new NodeGraphics(this);
     grNode->setTitle(title);
 
@@ -38,17 +38,17 @@ void Node::initNode(string title, vector<SOCKETTYPES> in, vector<SOCKETTYPES> ou
     if (content != nullptr && grNode)
         grNode->initContent();
 
-    //create socket for inputs
+    //inputs
     int counter = 0;
-    for (auto item : in) {
+    for (auto& item : in) {
         auto *s = new SocketNode(this, counter, in_pos, item);
         counter++;
         inputs.emplace_back(s);
     }
 
-    //create socket for outputs
+    //outputs
     counter = 0;
-    for (auto item : out) {
+    for (auto& item : out) {
         auto *s = new SocketNode(this, counter, out_pos, item);
         counter++;
         outputs.emplace_back(s);
@@ -73,7 +73,6 @@ void Node::initNode(string title, vector<SOCKETTYPES> in, vector<SOCKETTYPES> ou
 
 void Node::setPos(int x, int y) {
     if (grNode) grNode->setPos(x, y);
-    // else: position can't be applied until grNode exists; deserialize uses setPos after show()
 }
 
 QPointF Node::pos() const {

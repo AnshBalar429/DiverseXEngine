@@ -11,15 +11,14 @@
 #include "../serialization/serializator.h"
 #include "../../ui/graphics/socketGraphics.h"
 
-SocketNode::SocketNode(Node* node_, int index, POSITION position, SOCKETTYPES item) : node(node_), index(index), position(position), Serializable() {
+SocketNode::SocketNode(Node* node_, int index, POSITION position, const std::string& label)
+    : node(node_), index(index), position(position), label(label), Serializable() {
 
-    grSocket = new SocketGraphics(this, node->grNode, item);
+    grSocket = new SocketGraphics(this, label, node->grNode);
 
     auto ans = node->getSocketPos(index, position);
     grSocket->setPos(ans.first, ans.second);
     edge = nullptr;
-
-    socket_type = item;
 
 }
 
@@ -50,7 +49,7 @@ QJsonObject SocketNode::serialize() {
         {"id", static_cast<int>(id)},
         {"index", index},
         {"position", position},
-        {"socket_type", socket_type}
+        {"label", QString::fromStdString(label)}
     };
     return arr;
 }
@@ -60,6 +59,10 @@ bool SocketNode::deserialize(const QJsonObject &data, unordered_map<string, uint
     id = i.toInt();
 
     hashmap[std::to_string(i.toInt())] = reinterpret_cast<uintptr_t>(this);
+
+    if (data.contains("label")) {
+        label = data.value("label").toString().toStdString();
+    }
 
     return true;
 }

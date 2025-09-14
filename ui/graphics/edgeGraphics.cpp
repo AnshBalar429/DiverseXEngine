@@ -12,32 +12,47 @@
 #include "../../Common.h"
 
 EdgeGraphics::EdgeGraphics(EdgesNode* edge, QGraphicsPathItem *parent): QGraphicsPathItem(parent), edge(edge) {
-    _color = QColor("#001000");
-    _selectedColor = QColor("#00ff00");
+    _color = QColor("#61AFEF");
+    _selectedColor = QColor("#E5C07B");
 
     _pen = QPen(_color);
     _selectedPen = QPen(_selectedColor);
-    _pen_dragging = QPen(_color);
-    _pen.setWidthF(2.0);
-    _selectedPen.setWidthF(2.0);
+    _pen_dragging = QPen(QColor("#F39C12"));
+
+    _pen.setWidthF(2.5);
+    _selectedPen.setWidthF(3.0);
     _pen_dragging.setStyle(Qt::DashLine);
-    _pen_dragging.setWidth(2.0);
+    _pen_dragging.setWidthF(2.5);
+
     setFlags(QGraphicsPathItem::ItemIsSelectable);
     setZValue(-1);
 }
 
 void EdgeGraphics::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+
+    painter->setRenderHint(QPainter::Antialiasing);
+
     auto p = calPath();
     setPath(p);
 
     if (edge->endSocket == nullptr) {
         painter->setPen(_pen_dragging);
     } else {
-        if (!isSelected())
+        if (!isSelected()) {
             painter->setPen(_pen);
-        else
+        } else {
             painter->setPen(_selectedPen);
+        }
     }
+
+    QPen shadowPen = _pen;
+    shadowPen.setColor(QColor(0, 0, 0, 50));
+    shadowPen.setWidthF(_pen.widthF() + 1.5);
+    painter->save();
+    painter->setPen(shadowPen);
+    painter->drawPath(path());
+    painter->restore();
+
     painter->setBrush(Qt::NoBrush);
     painter->drawPath(path());
 }
@@ -111,4 +126,3 @@ QPainterPath EdgeGraphicsBezier::calPath() {
 
     return path;
 }
-
